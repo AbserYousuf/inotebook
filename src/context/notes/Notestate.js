@@ -63,7 +63,6 @@ const Notestate = (props) => {
       },
     });
     const json = await response.json();
-    console.log(json);
     const notesArray = Array.isArray(json)
       ? json
       : json && Array.isArray(json.notes)
@@ -97,7 +96,6 @@ const Notestate = (props) => {
       },
     });
     const json = await response.json();
-    console.log(json);
     setnotes(notes.filter((note) => note._id !== id));
   };
   const EditNotes = async (id, title, description) => {
@@ -111,7 +109,6 @@ const Notestate = (props) => {
     });
     const json = await response.json();
     let newNotes = await JSON.parse(JSON.stringify(notes));
-    console.log(json);
 
     for (let index = 0; index < newNotes.length; index++) {
       const element = [...newNotes];

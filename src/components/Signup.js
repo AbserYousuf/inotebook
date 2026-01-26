@@ -23,12 +23,12 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(host);
     const { name, username, email, password } = input;
 
     if (
-      name.trim().length < 3 ||
-      username.trim().length < 5 ||
+      name.trim().length < 3 &&
+      username.trim().length < 5 &&
       password.trim().length < 6
     ) {
       setMessage(

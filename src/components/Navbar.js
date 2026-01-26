@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
+const host = process.env.REACT_APP_API_URL;
+
 export default function Navbar({ loading }) {
-  const host = "http://localhost:5000";
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -13,36 +14,30 @@ export default function Navbar({ loading }) {
     email: "",
   });
 
-  React.useEffect(() => {}, [location]);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
+  const isLoggedIn = !!localStorage.getItem("token");
 
   const grabDetails = async () => {
     loading(10);
-    console.log("click");
 
     if (showProfile) {
       setShowProfile(false);
       loading(0);
       return;
     }
+
     loading(50);
     try {
       const response = await fetch(`${host}/api/auth/getuser`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          authtoken: localStorage.getItem("token"), // MUST match middleware
+          authtoken: localStorage.getItem("token"),
         },
       });
 
       const json = await response.json();
-      console.log(json);
       loading(70);
-      // 👇 this is the correct check
+
       if (json.data) {
         setUser({
           name: json.data.Name,
@@ -57,12 +52,36 @@ export default function Navbar({ loading }) {
     loading(100);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setShowProfile(false);
+    navigate("/login");
+  };
+
+  // Check if we are on /login, /signup, or /redirect page
+  const hideAuthButtons =
+    location.pathname === "/signup" || location.pathname === "/redirect";
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
         <span className="navbar-brand">Navbar</span>
 
-        <div className="collapse navbar-collapse">
+        {/* Hamburger */}
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+
+        {/* Collapsible Content */}
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto">
             <li className="nav-item">
               <Link
@@ -72,7 +91,6 @@ export default function Navbar({ loading }) {
                 Home
               </Link>
             </li>
-
             <li className="nav-item">
               <Link
                 className={`nav-link ${location.pathname === "/about" ? "active" : ""}`}
@@ -83,7 +101,8 @@ export default function Navbar({ loading }) {
             </li>
           </ul>
 
-          {!localStorage.getItem("token") ? (
+          {/* Auth Buttons */}
+          {!isLoggedIn && !hideAuthButtons && (
             <>
               <Link className="btn btn-primary mx-2" to="/login">
                 Login
@@ -92,9 +111,11 @@ export default function Navbar({ loading }) {
                 Signup
               </Link>
             </>
-          ) : (
+          )}
+
+          {/* User Info */}
+          {isLoggedIn && (
             <div className="position-relative d-flex align-items-center">
-              {/* User Icon */}
               <div
                 onClick={grabDetails}
                 style={{
@@ -109,9 +130,8 @@ export default function Navbar({ loading }) {
                 <i className="fa-solid fa-user" style={{ color: "#9e78d1" }} />
               </div>
 
-              {/* Profile Dropdown */}
               {showProfile && (
-                <div className="profile-dropdown">
+                <div className="profile-dropdown ms-2">
                   <div>
                     <strong>Name:</strong> {user.name}
                   </div>
