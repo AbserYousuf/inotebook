@@ -11,7 +11,7 @@ const app = express();
 /* ---------- Middleware ---------- */
 app.use(
   cors({
-    origin: "http://localhost:3000", // OK for now (we'll change on deploy)
+    origin: true, // OK for now (we'll change on deploy)
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: [
       "Content-Type",
@@ -37,7 +37,7 @@ app.get("*", (req, res) => {
 });
 
 /* ---------- Server ---------- */
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 
 app.listen(port, () => {
   console.log(`inotebook is listening on port ${port}`);
