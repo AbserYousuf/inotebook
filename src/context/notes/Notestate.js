@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import notecontext from "./notecontext";
 const Notestate = (props) => {
-  const host = "http://localhost:5000";
+  const host = process.env.REACT_APP_API_URL;
   const [message, setmessage] = useState(null);
   const [alert1, setalert] = useState(false);
   const [alert2, setalert2] = useState(false);
@@ -72,21 +72,7 @@ const Notestate = (props) => {
 
     setnotes(notesArray);
   };
-  const userdetails = async () => {
-    const response = await fetch(`${host}`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-        authtoken: localStorage.getItem("token"),
-      },
-    });
-    const json = await response.json();
-    if (!json.ok) {
-      console.log(json.msg);
-    } else {
-      console.log(json.data);
-    }
-  };
+
   const addNotes = async (title, description) => {
     const token = localStorage.getItem("token");
     const res = await fetch(`${host}/api/notes/createnotes`, {
@@ -152,7 +138,6 @@ const Notestate = (props) => {
         handleAlert2,
         alert2,
         ControlAlert1,
-        userdetails,
       }}
     >
       {props.children}

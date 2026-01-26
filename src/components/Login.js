@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import LoginAlert from "./LoginAlert";
 import { useNavigate } from "react-router";
-const host = "http://localhost:5000";
+const host = process.env.REACT_APP_API_URL;
 export default function Login() {
   const [message, setmessage] = useState(null);
   const [issuccess, setissuccess] = useState(false);

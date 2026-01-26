@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-const host = "http://localhost:5000";
+const host = process.env.REACT_APP_API_URL;
 export default function Signup() {
   const navigate = useNavigate();
 
