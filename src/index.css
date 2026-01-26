@@ -11,3 +11,37 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+i{
+  cursor: pointer;
+}
+.navbar-brand{
+  cursor: pointer;
+}
+.my-alert{
+  position: fixed;
+
+}
+.change{
+  position: relative;
+  left:7px;
+}
+.control{
+  background-color: rgb(39, 37, 37);
+  color:white;
+}
+.profile-dropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: #212529;
+  color: white;
+  padding: 12px;
+  width: 250px;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  z-index: 999;
+}
+
+.profile-dropdown div {
+  margin-bottom: 8px;
+}

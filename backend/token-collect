@@ -1,0 +1,21 @@
+ 
+  {"name":"Numan",
+   "username":"Numan123",
+   "email":"numan123@gmail.com",
+   "password":"Numan123",
+"authtoken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjk2OGJlNjg5ZGFhYzNjYWJiNWZmNjk0In0sImlhdCI6MTc2ODQ3NDY0Mn0.Em6OqnT7S5esLv03UIcfPBDVndX-nO4p-vXRbppVw4A",
+     
+ 
+ "name1":"Abser",
+   "username1":"Abser234",
+   "email1":"abser23@gmail.com",
+   "password1":"Abser234",
+      "authtoken1": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjk2OGJmNzk5ZGFhYzNjYWJiNWZmNmE0In0sImlhdCI6MTc2ODQ3NDcyMH0.lnoazqJm9A072K98UqS4aA7LbbZw8VZU3jLqIb1e-W0",
+
+   "name2":"Inayat09",
+   "username2":"Inayat09",
+   "email2":"inayat09@gmail.com",
+   "password2":"Inayat098",
+   "authtoken2": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjk2OGMwODQwZGYxMzk0NGFkMTlmNzYxIn0sImlhdCI6MTc2ODQ3NDc2N30.72L7h3vDNbdHS-3N2U8v3JzKaHI6Hv_QQB_QFkQ1Umg"
+}
+
