@@ -6,7 +6,6 @@ const host = process.env.REACT_APP_API_URL;
 export default function Navbar({ loading }) {
   const location = useLocation();
   const navigate = useNavigate();
-
   const [showProfile, setShowProfile] = useState(false);
   const [user, setUser] = useState({
     name: "",
@@ -18,13 +17,11 @@ export default function Navbar({ loading }) {
 
   const grabDetails = async () => {
     loading(10);
-
     if (showProfile) {
       setShowProfile(false);
       loading(0);
       return;
     }
-
     loading(50);
     try {
       const response = await fetch(`${host}/api/auth/getuser`, {
@@ -34,10 +31,8 @@ export default function Navbar({ loading }) {
           authtoken: localStorage.getItem("token"),
         },
       });
-
       const json = await response.json();
       loading(70);
-
       if (json.data) {
         setUser({
           name: json.data.Name,
@@ -63,11 +58,15 @@ export default function Navbar({ loading }) {
     location.pathname === "/signup" || location.pathname === "/redirect";
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div className="container-fluid">
-        <span className="navbar-brand">Navbar</span>
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      {/* ↑ added fixed-top → common for note apps, prevents layout shift */}
 
-        {/* Hamburger */}
+      <div className="container-fluid">
+        <Link className="navbar-brand" to="/">
+          iNotebook {/* changed from <span> to <Link> for better semantics */}
+        </Link>
+
+        {/* Hamburger - this should now be visible below ~992px */}
         <button
           className="navbar-toggler"
           type="button"
@@ -82,7 +81,8 @@ export default function Navbar({ loading }) {
 
         {/* Collapsible Content */}
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            {/* ↑ added mb-2 mb-lg-0 → better spacing on mobile */}
             <li className="nav-item">
               <Link
                 className={`nav-link ${location.pathname === "/" ? "active" : ""}`}
@@ -101,54 +101,73 @@ export default function Navbar({ loading }) {
             </li>
           </ul>
 
-          {/* Auth Buttons */}
-          {!isLoggedIn && !hideAuthButtons && (
-            <>
-              <Link className="btn btn-primary mx-2" to="/login">
-                Login
-              </Link>
-              <Link className="btn btn-success" to="/signup">
-                Signup
-              </Link>
-            </>
-          )}
+          {/* Right side items */}
+          <div className="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+            {/* ↑ wrapped in d-flex + gap + mt for better mobile stacking */}
 
-          {/* User Info */}
-          {isLoggedIn && (
-            <div className="position-relative d-flex align-items-center">
-              <div
-                onClick={grabDetails}
-                style={{
-                  height: "2em",
-                  width: "2em",
-                  border: "1px solid white",
-                  borderRadius: "50%",
-                  cursor: "pointer",
-                }}
-                className="d-flex justify-content-center align-items-center"
-              >
-                <i className="fa-solid fa-user" style={{ color: "#9e78d1" }} />
-              </div>
+            {!isLoggedIn && !hideAuthButtons && (
+              <>
+                <Link className="btn btn-primary" to="/login">
+                  Login
+                </Link>
+                <Link className="btn btn-success" to="/signup">
+                  Signup
+                </Link>
+              </>
+            )}
 
-              {showProfile && (
-                <div className="profile-dropdown ms-2">
-                  <div>
-                    <strong>Name:</strong> {user.name}
-                  </div>
-                  <div>
-                    <strong>Username:</strong> {user.username}
-                  </div>
-                  <div>
-                    <strong>Email:</strong> {user.email}
-                  </div>
+            {isLoggedIn && (
+              <div className="d-flex align-items-center gap-3">
+                <div
+                  onClick={grabDetails}
+                  style={{
+                    height: "2.2em",
+                    width: "2.2em",
+                    border: "1px solid white",
+                    borderRadius: "50%",
+                    cursor: "pointer",
+                    backgroundColor: "#343a40", // subtle bg for contrast
+                  }}
+                  className="d-flex justify-content-center align-items-center"
+                >
+                  <i
+                    className="fa-solid fa-user"
+                    style={{ color: "#9e78d1" }}
+                  />
                 </div>
-              )}
 
-              <button className="btn btn-primary mx-3" onClick={handleLogout}>
-                Logout
-              </button>
-            </div>
-          )}
+                {showProfile && (
+                  <div
+                    className="profile-dropdown bg-dark text-white p-3 rounded shadow"
+                    style={{
+                      position: "absolute",
+                      top: "100%",
+                      right: "1rem",
+                      zIndex: 1000,
+                      minWidth: "220px",
+                    }}
+                  >
+                    <div>
+                      <strong>Name:</strong> {user.name}
+                    </div>
+                    <div>
+                      <strong>Username:</strong> {user.username}
+                    </div>
+                    <div>
+                      <strong>Email:</strong> {user.email}
+                    </div>
+                  </div>
+                )}
+
+                <button
+                  className="btn btn-outline-primary"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </nav>

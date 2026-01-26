@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 const host = process.env.REACT_APP_API_URL;
+
 export default function Signup() {
   const navigate = useNavigate();
-
   const [message, setMessage] = useState(null);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false); // you can remove this if not used elsewhere
 
   const [input, setInput] = useState({
     name: "",
@@ -23,21 +24,18 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(host);
     const { name, username, email, password } = input;
 
+    // Validation
     if (
       name.trim().length < 3 &&
       username.trim().length < 5 &&
       password.trim().length < 6
     ) {
-      setMessage(
-        "Name must be at least 3 chars, username 5 chars, and password 6 chars",
-      );
+      setMessage("Name ≥3 chars, username ≥5 chars, password ≥6 chars");
       setIsSuccess(false);
       return;
     }
-
     if (!/[A-Z]/.test(password)) {
       setMessage("Password must contain at least one uppercase letter");
       setIsSuccess(false);
@@ -47,42 +45,55 @@ export default function Signup() {
     try {
       const response = await fetch(`${host}/api/auth/createuser`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, username, email, password }),
       });
 
       const json = await response.json();
 
       if (!response.ok) {
-        setMessage(json.message);
+        setMessage(json.message || "Signup failed");
         setIsSuccess(false);
         return;
       }
 
-      setMessage(json.message);
+      setMessage(json.message || "Account created successfully!");
       setIsSuccess(true);
 
       setTimeout(() => {
+        setMessage(null); // optional: auto-hide after redirect
         navigate("/redirect");
-      }, 1000);
+      }, 1500); // a bit longer so user sees success message
     } catch (err) {
-      setMessage("Something went wrong. Try again.");
+      setMessage("Something went wrong. Please try again.");
       setIsSuccess(false);
     }
   };
 
   return (
     <>
+      {/* Floating alert – placed at top level */}
       {message && (
         <div
-          className={`alert ${isSuccess ? "alert-success" : "alert-danger"}`}
+          className={`alert ${isSuccess ? "alert-success" : "alert-danger"} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3 shadow`}
+          role="alert"
+          style={{
+            zIndex: 1050, // above most elements
+            minWidth: "300px", // decent width on mobile
+            maxWidth: "90vw",
+          }}
         >
           {message}
+          <button
+            type="button"
+            className="btn-close"
+            onClick={() => setMessage(null)}
+            aria-label="Close"
+          ></button>
         </div>
       )}
 
+      {/* Rest of your form – unchanged */}
       <section className="vh-100" style={{ backgroundColor: "#eee" }}>
         <div className="container h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
@@ -94,7 +105,6 @@ export default function Signup() {
                       <p className="text-center h1 fw-bold mb-5 mt-4">
                         Sign up
                       </p>
-
                       <form onSubmit={handleSubmit}>
                         {/* Name */}
                         <div className="mb-4">
@@ -108,7 +118,6 @@ export default function Signup() {
                             required
                           />
                         </div>
-
                         {/* Username */}
                         <div className="mb-4">
                           <input
@@ -121,7 +130,6 @@ export default function Signup() {
                             required
                           />
                         </div>
-
                         {/* Email */}
                         <div className="mb-4">
                           <input
@@ -134,7 +142,6 @@ export default function Signup() {
                             required
                           />
                         </div>
-
                         {/* Password */}
                         <div className="mb-4 position-relative">
                           <input
@@ -152,7 +159,6 @@ export default function Signup() {
                             onClick={toggleVisibility}
                           />
                         </div>
-
                         <button
                           type="submit"
                           className="btn btn-primary btn-lg w-100"
