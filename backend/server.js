@@ -1,17 +1,17 @@
 const Connection = require("./database");
+require("dotenv").config({ path: "./.env" });
+
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-require("dotenv").config();
 const notes = require("./routes/notes");
 const auth = require("./routes/auth");
-
 const app = express();
-
+const Client_Port = process.env.FRONT_END
 /* ---------- Middleware ---------- */
 app.use(
   cors({
-    origin: true, // OK for now (we'll change on deploy)
+    origin: Client_Port,// OK for now (we'll change on deploy)
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: [
       "Content-Type",
@@ -30,10 +30,10 @@ app.use("/api/auth", auth);
 app.use("/api/notes", notes);
 
 /* ---------- Serve React ---------- */
-app.use(express.static(path.join(__dirname, "../react/build")));
+app.use(express.static(path.join(__dirname, "../build")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../react/build/index.html"));
+  res.sendFile(path.join(__dirname, "../build/index.html"));
 });
 
 /* ---------- Server ---------- */
