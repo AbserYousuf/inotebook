@@ -14,6 +14,7 @@ export default function Signup() {
     username: "",
     email: "",
     password: "",
+    Recoveryemail: ""
   });
 
   const toggleVisibility = () => setShow((prev) => !prev);
@@ -24,9 +25,10 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, username, email, password } = input;
+    const { name, username, email, password, Recoveryemail } = input;
 
     // Validation
+    console.log(Recoveryemail)
     if (
       name.trim().length < 3 &&
       username.trim().length < 5 &&
@@ -36,8 +38,12 @@ export default function Signup() {
       setIsSuccess(false);
       return;
     }
-    if (!/[A-Z]/.test(password)) {
-      setMessage("Password must contain at least one uppercase letter");
+    if (
+      name.trim().length < 3 ||
+      username.trim().length < 5 ||
+      password.trim().length < 6
+    ) {
+      setMessage("Name ≥3 chars, username ≥5 chars, password ≥6 chars");
       setIsSuccess(false);
       return;
     }
@@ -46,7 +52,7 @@ export default function Signup() {
       const response = await fetch(`${host}/api/auth/createuser`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, username, email, password }),
+        body: JSON.stringify({ name, username, email, password, Recoveryemail }),
       });
 
       const json = await response.json();
@@ -140,6 +146,16 @@ export default function Signup() {
                             onChange={handleInput}
                             placeholder="Email"
                             required
+                          />
+                          <input
+                            type="email"
+                            className="form-control"
+                            name="Recoveryemail"
+                            value={input.Recoveryemail}
+                            onChange={handleInput}
+                            placeholder="RecoveryEmail"
+                            required
+                            style={{ position: "relative", top: "0.7em" }}
                           />
                         </div>
                         {/* Password */}
