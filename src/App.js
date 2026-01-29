@@ -10,6 +10,8 @@ import Home from "./components/Home";
 import Redirecting from "./components/Redirecting";
 import LoadingBar from "react-top-loading-bar";
 import { useState } from "react";
+import Recovery from "./components/Recovery";
+import Otp from './components/otp'
 function App() {
   const [progress12, setprogress12] = useState(0);
   const loading = (progress) => {
@@ -25,6 +27,8 @@ function App() {
           {/* Public Pages */}
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/otp" element={<Otp />} />
+          <Route path="/recovery" element={<Recovery />} />
 
           {/* Auth & App Pages */}
           <Route
@@ -43,6 +47,7 @@ function App() {
               </div>
             }
           />
+
           <Route
             path="/add"
             element={
