@@ -4,7 +4,8 @@ const getuser = require("../Middleware/getuser");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const key = process.env.SECRET_KEY;
-const nodemailer = require("nodemailer");
+const { Resend } = require('resend');
+const resend = new Resend(process.env.RESEND_API_KEY);
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const OtpVerify = require("../Middleware/otpverify");
@@ -110,27 +111,16 @@ router.post(
       await user.save();
       // Send OTP
       if (user.Recovery_Email) {
-         try {
-  // Your email code here (transporter + sendMail)
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-
-  await transporter.sendMail({
+       
+          try {
+  await resend.emails.send({
     from: `"iNotebook" <${process.env.EMAIL_USER}>`,
-    to:  user.Recovery_Email,  // or Recoveryemail if that's the intent
-    subject:"Your OTP for password reset" ,
-    text: `Hi ${user.Name}, Your OTP is ${backotp}. It will expire in 10 minutes`,
+    to: user.Recovery_Email,
+    subject: 'Your OTP for password reset',
+    text: `Your OTP is ${backotp}. Expires in 10 min.`,
   });
-
-  console.log("Welcome email sent");
-} catch (emailErr) {
-  console.error("Email sending failed (non-blocking):", emailErr);
-  // Do NOT throw or return error — continue to success response
+} catch (err) {
+  console.error("Resend OTP failed:", err);
 }
       }
       return res.status(200).json({
