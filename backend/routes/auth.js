@@ -108,18 +108,8 @@ router.post(
       user.resetOTPExpire = Date.now() + 10 * 60 * 1000;
       user.resetOTPAttempts = 0;
       await user.save();
-
-    
-
-return res.json({
-  success: true,
-  message: "Sign Successful",
-  authtoken: authtoken,
-});
-
       // Send OTP
       if (user.Recovery_Email) {
-        
          try {
   // Your email code here (transporter + sendMail)
   const transporter = nodemailer.createTransport({
