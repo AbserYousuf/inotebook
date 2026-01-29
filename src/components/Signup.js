@@ -88,8 +88,6 @@ try {
     setIsSuccess(false);
   }
 };
-What this does:
-
   return (
     <>
       {/* Floating alert – placed at top level */}
