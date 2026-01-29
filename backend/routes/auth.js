@@ -112,16 +112,29 @@ router.post(
       // Send OTP
       if (user.Recovery_Email) {
        
-          try {
+   console.log('Attempting to send OTP email to:', user.Recovery_Email);
+console.log('RESEND_API_KEY exists?', !!process.env.RESEND_API_KEY);
+
+try {
+  console.log('Inside Resend try block');
+  const { Resend } = require('resend');
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
+  console.log('Resend client created');
+
   await resend.emails.send({
-    from: `"iNotebook" <${process.env.EMAIL_USER}>`,
+    from: 'iNotebook <onboarding@resend.dev>',
     to: user.Recovery_Email,
     subject: 'Your OTP for password reset',
-    text: `Your OTP is ${backotp}. Expires in 10 min.`,
+    text: `Hi ${user.Name || 'User'},\nYour OTP is ${backotp}.\nExpires in 10 min.`,
   });
+
+  console.log('OTP sent via Resend successfully');
 } catch (err) {
-  console.error("Resend OTP failed:", err);
+  console.error('Resend OTP failed:', err.message || err);
 }
+
+console.log('Email block finished - returning success');
       }
       return res.status(200).json({
         success: true,
