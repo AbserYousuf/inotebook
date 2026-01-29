@@ -13,7 +13,9 @@ export default function Login() {
   const handleChange = (event) => {
     setinput({ ...input, [event.target.name]: event.target.value });
   };
-
+  const send = () => {
+    Navigate('/recovery')
+  }
   const handlesubmit = async (event) => {
     const { email, password } = input;
     console.log("clicked");
@@ -68,6 +70,7 @@ export default function Login() {
           </div>
           <div className="row d-flex justify-content-center align-items-center h-100">
             <div className="col-md-9 col-lg-6 col-xl-5">
+
               <img
                 src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
                 className="img-fluid"
@@ -103,6 +106,10 @@ export default function Login() {
                   <label className="form-label" htmlFor="form3Example4">
                     Password
                   </label>
+                </div>
+
+                <div className="d-flex justify-content-between align-items-center">
+                  <span className="text-body" onClick={send} style={{ position: "relative", left: "15em", bottom: "2em", cursor: "pointer" }}>Forgot password?</span>
                 </div>
                 <button
                   type="submit"
