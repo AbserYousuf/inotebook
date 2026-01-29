@@ -62,14 +62,17 @@ export default function Signup() {
         setIsSuccess(false);
         return;
       }
-
+else{
       setMessage(json.message || "Account created successfully!");
       setIsSuccess(true);
 
       setTimeout(() => {
         setMessage(null); // optional: auto-hide after redirect
         navigate("/redirect");
-      }, 1500); // a bit longer so user sees success message
+      }, 1500); 
+}
+  
+  // a bit longer so user sees success message
     } catch (err) {
       setMessage("Something went wrong. Please try again.");
       setIsSuccess(false);
