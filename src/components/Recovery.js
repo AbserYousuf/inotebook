@@ -90,7 +90,7 @@ export default function Recovery() {
                                         name="email"
                                         type="email"
                                         className="form-control"
-                                        placeholder="Enter your email address"
+                                        placeholder="Enter your Recovery email address"
                                         required
                                         value={Email.email}
                                         onChange={handleChange}
@@ -108,7 +108,7 @@ export default function Recovery() {
                             </button>
 
                             {/* Hidden token (if needed) */}
-                            <input type="hidden" className="hide" name="token" id="token" value="" />
+                          
                         </form>
 
                         {/* Back to login link */}
