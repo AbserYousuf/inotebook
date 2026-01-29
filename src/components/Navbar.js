@@ -54,8 +54,10 @@ export default function Navbar({ loading }) {
   };
 
   // Check if we are on /login, /signup, or /redirect page
-  const hideAuthButtons =
-    location.pathname === "/signup" || location.pathname === "/redirect";
+  const hideAuthButtons = location.pathname === "/redirect"
+    || location.pathname === "/recovery"
+    || location.pathname === "/otp"
+    ;
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -83,22 +85,28 @@ export default function Navbar({ loading }) {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             {/* ↑ added mb-2 mb-lg-0 → better spacing on mobile */}
-            <li className="nav-item">
-              <Link
-                className={`nav-link ${location.pathname === "/" ? "active" : ""}`}
-                to="/"
-              >
-                Home
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                className={`nav-link ${location.pathname === "/about" ? "active" : ""}`}
-                to="/about"
-              >
-                About
-              </Link>
-            </li>
+            {!isLoggedIn && !hideAuthButtons && (
+              <>
+                <li className="nav-item">
+                  <Link
+                    className={`nav-link ${location.pathname === "/" ? "active" : ""}`}
+                    to="/"
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className={`nav-link ${location.pathname === "/about" ? "active" : ""}`}
+                    to="/about"
+                  >
+                    About
+                  </Link>
+
+                </li>
+              </>
+            )}
+
           </ul>
 
           {/* Right side items */}
@@ -113,6 +121,7 @@ export default function Navbar({ loading }) {
                 <Link className="btn btn-success" to="/signup">
                   Signup
                 </Link>
+
               </>
             )}
 
