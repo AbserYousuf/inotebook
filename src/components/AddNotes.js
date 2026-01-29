@@ -7,7 +7,7 @@ export default function AddNotes() {
 
   const [note, setNote] = useState({
     title: "",
-    description: ""
+    description: "",
   });
 
   const handleChange = (event) => {
@@ -27,7 +27,7 @@ export default function AddNotes() {
   };
 
   return (
-    <div className="container my-3">
+    <div className="container my-3" style={{ position: "relative", top: "5em" }}>
       <h2>Add Notes</h2>
 
       <form onSubmit={handleSubmit} className="my-4">
@@ -41,7 +41,7 @@ export default function AddNotes() {
             className="form-control"
             id="title"
             name="title"
-            value={note.title}          // ← controlled input banana zaroori
+            value={note.title} // ← controlled input banana zaroori
             placeholder="Enter title (min 3 chars)"
           />
         </div>
@@ -52,15 +52,21 @@ export default function AddNotes() {
           </label>
           <input
             onChange={handleChange}
-            type="text"                 // ← type="description" galat tha
+            type="text" // ← type="description" galat tha
             className="form-control"
             id="description"
             name="description"
-            value={note.description}    // ← controlled input
+            value={note.description} // ← controlled input
             placeholder="Enter description (min 5 chars)"
           />
         </div>
-        <button type="submit" className="btn btn-primary" disabled={note.title.trim().length < 3 || note.description.trim().length < 5}>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          disabled={
+            note.title.trim().length < 3 || note.description.trim().length < 5
+          }
+        >
           AddNotes
         </button>
       </form>
