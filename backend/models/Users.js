@@ -14,10 +14,27 @@ const UserSchema = new Schema({
     type: String,
     required: true,
     unique: true,
+    lowercase: true,
+    trim: true,
   },
   Password: {
     type: String,
     required: true,
+  },
+  Recovery_Email: {
+    type: String,
+    lowercase: true,
+    trim: true,
+  },
+  resetOTP: {
+    type: String,
+  },
+  resetOTPExpire: {
+    type: Date,
+  },
+  resetOTPAttempts: {
+    type: Number,
+    default: 0,
   },
   date: {
     type: Date,
