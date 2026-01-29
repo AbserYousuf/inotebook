@@ -121,12 +121,27 @@ try {
   console.log('Resend client created');
 
   await resend.emails.send({
- from: 'iNotebook <abseryousuf50@gmail.com>',
-    to: user.Recovery_Email,
-    subject: 'Your OTP for password reset',
-    text: `Hi ${user.Name || 'User'},\nYour OTP is ${backotp}.\nExpires in 10 min.`,
-  });
-
+  from: 'iNotebook <abseryousuf50@gmail.com>',  // after verification
+  to: user.Recovery_Email,
+  subject: 'iNotebook - Password Reset Code (Urgent)',
+  text: `Hi ${user.Name || 'User'},\n\nUse this code to reset your password: ${backotp}\n\nThis code expires in 10 minutes.\n\nIf you didn't request this, ignore the email.`,
+  html: `
+    <div style="font-family: Arial; max-width: 500px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+      <h2 style="color: #2c3e50;">Password Reset Code</h2>
+      <p>Hi ${user.Name || 'User'},</p>
+      <p style="font-size: 32px; letter-spacing: 8px; font-weight: bold; background: #f8f9fa; padding: 15px; text-align: center;">
+        ${backotp}
+      </p>
+      <p style="color: #555;">This code expires in <strong>10 minutes</strong>.</p>
+      <p style="color: #777; font-size: 14px;">If you didn't request a password reset, please ignore this message or contact support.</p>
+      <hr style="border: none; border-top: 1px solid #eee;">
+      <p style="font-size: 12px; color: #999;">iNotebook - Secure Notes App</p>
+    </div>
+  `,
+  headers: {
+    'X-Entity-Ref-ID': 'otp-reset-' + Date.now()  // helps tracking
+  }
+});
   console.log('OTP sent via Resend successfully');
 } catch (err) {
   console.error('Resend OTP failed:', err.message || err);
