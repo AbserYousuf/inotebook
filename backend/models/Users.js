@@ -24,6 +24,7 @@ const UserSchema = new Schema({
   Recovery_Email: {
     type: String,
     lowercase: true,
+    unique:true,
     trim: true,
   },
   resetOTP: {
