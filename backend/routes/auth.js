@@ -109,21 +109,39 @@ router.post(
       user.resetOTPAttempts = 0;
       await user.save();
 
+    
+
+return res.json({
+  success: true,
+  message: "Sign Successful",
+  authtoken: authtoken,
+});
+
       // Send OTP
       if (user.Recovery_Email) {
-        const transporter = nodemailer.createTransport({
-          service: "gmail",
-          auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS,
-          },
-        });
-        await transporter.sendMail({
-          from: `"Your App" <${process.env.EMAIL_USER}>`,
-          to: user.Recovery_Email,
-          subject: "Your OTP for password reset",
-          text: `Your OTP is ${backotp}. It will expire in 10 minutes.`,
-        });
+        
+         try {
+  // Your email code here (transporter + sendMail)
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  await transporter.sendMail({
+    from: `"iNotebook" <${process.env.EMAIL_USER}>`,
+    to:  user.Recovery_Email,  // or Recoveryemail if that's the intent
+    subject:"Your OTP for password reset" ,
+    text: `Hi ${user.Name}, Your OTP is ${backotp}. It will expire in 10 minutes`,
+  });
+
+  console.log("Welcome email sent");
+} catch (emailErr) {
+  console.error("Email sending failed (non-blocking):", emailErr);
+  // Do NOT throw or return error — continue to success response
+}
       }
       return res.status(200).json({
         success: true,
