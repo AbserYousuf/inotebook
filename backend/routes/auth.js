@@ -121,7 +121,7 @@ try {
   console.log('Resend client created');
 
   await resend.emails.send({
-    from: 'iNotebook <onboarding@resend.dev>',
+ from: 'iNotebook <abseryousuf50@gmail.com>',
     to: user.Recovery_Email,
     subject: 'Your OTP for password reset',
     text: `Hi ${user.Name || 'User'},\nYour OTP is ${backotp}.\nExpires in 10 min.`,
