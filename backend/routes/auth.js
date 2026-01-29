@@ -41,6 +41,13 @@ router.post(
           message: "Username already exists Choose another Username",
         });
       }
+      user = await User.findOne({Recovery_Email: Recoveryemail})
+      if(user){
+         return res
+          .status(409)
+          .json({ success: false, message: "Please choose different recoveryEmail " });
+      }
+      }
       user = await User.findOne({ Email: email });
       if (user) {
         return res
