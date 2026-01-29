@@ -47,7 +47,7 @@ router.post(
           .status(409)
           .json({ success: false, message: "Please choose different recoveryEmail " });
       }
-      }
+      
       user = await User.findOne({ Email: email });
       if (user) {
         return res
