@@ -48,36 +48,47 @@ export default function Signup() {
       return;
     }
 
+try {
+    console.log("Sending to:", `${host}/api/auth/createuser`);
+    console.log("Payload:", { name, username, email, password, Recoveryemail });
+
+    const response = await fetch(`${host}/api/auth/createuser`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, username, email, password, Recoveryemail }),
+    });
+
+    console.log("Status:", response.status, "OK:", response.ok);
+
+    let json;
     try {
-      const response = await fetch(`${host}/api/auth/createuser`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, username, email, password, Recoveryemail }),
-      });
+      json = await response.json();
+      console.log("Response body:", json);
+    } catch (jsonErr) {
+      console.error("JSON parse failed:", jsonErr);
+      json = {};
+    }
 
-      const json = await response.json();
-
-      if (!response.ok) {
-        setMessage(json.message || "Signup failed");
-        setIsSuccess(false);
-        return;
-      }
-else{
+    // Accept any 2xx status as success
+    if (response.status >= 200 && response.status < 300) {
       setMessage(json.message || "Account created successfully!");
       setIsSuccess(true);
-
       setTimeout(() => {
-        setMessage(null); // optional: auto-hide after redirect
-        navigate("/redirect");
-      }, 1500); 
-}
-  
-  // a bit longer so user sees success message
-    } catch (err) {
-      setMessage("Something went wrong. Please try again.");
+        setMessage(null);
+        navigate("/redirect"); // change to "/login" if needed
+      }, 2000);
+    } else {
+      // error from backend
+      setMessage(json.message || json.error || "Signup failed – check details.");
       setIsSuccess(false);
     }
-  };
+  } catch (err) {
+    console.error("Full error:", err);
+    setMessage("Network or server error – please try again.");
+    setIsSuccess(false);
+  }
+};
+What this does:
 
   return (
     <>
