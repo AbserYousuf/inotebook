@@ -1,4 +1,4 @@
-const key = process.env.secret_key
+const key = process.env.SECRET_KEY
 const jwt=require('jsonwebtoken')
 const TokenVerification=(req,res,next)=>{
     const token = req.header('authtoken')
